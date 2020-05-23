@@ -28,7 +28,7 @@ function Product(props){
 function App() {
   return (
     <div>
-        <Product image="https://media3.scdn.vn/img4/2020/03_04/O6MAvAed87qmmdqsFaYw_simg_b5529c_250x250_maxb.jpg" name="Hạt điều" price="50000"/>
+        <Product image="https://media3.scdn.vn/img4/2020/03_04/https://media3.scdn.vn/img4/2020/03_25/hxsrIvG6TlugHH1QNxG1_simg_b5529c_250x250_maxb.jpg.jpg" name="Hạt điều" price="50000"/>
     </div>
   );
 }
