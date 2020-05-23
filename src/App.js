@@ -3,7 +3,7 @@ import './App.css';
 
 function Image(props){
   return (
-    <image src={props.urlImage}/>
+    <img src={props.urlImage}/>
   )
 }
 function ProductName(props){
