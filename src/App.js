@@ -1,24 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+function Image(props){
+  return (
+    <image src={props.urlImage}/>
+  )
+}
+function ProductName(props){
+  return (
+    <p>{props.nameProduct}</p>
+  )
+}
+function ProductPrice(props){
+  return (
+    <p>{props.priceProduct}</p>
+  )
+}
+function Product(props){
+  return(
+  <>
+  <Image urlImage={props.image}/>
+  <ProductName nameProduct={props.name}/>
+  <ProductPrice priceProduct={props.price}/>
+  </>
+  )
+}
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Tài óc chó ^^
-        </p>
-        <a
-          className="App-link"
-          href="https://www.facebook.com/taihoangthanh79"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Facebook of Tài
-        </a>
-      </header>
+    <div>
+        <Product image="https://media3.scdn.vn/img4/2020/03_04/O6MAvAed87qmmdqsFaYw_simg_b5529c_250x250_maxb.jpg" name="Hạt điều" price="50000"/>
     </div>
   );
 }
