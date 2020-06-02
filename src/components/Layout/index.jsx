@@ -1,4 +1,5 @@
 import React from 'react'
+import Cart from '../Cart'
 
 function Layout(props) {
   return (
@@ -59,91 +60,7 @@ function Layout(props) {
                       <a className="search-btn nav-search search-trigger" href="#"><i className="fas fa-search" /></a>
                     </li>
                     <li className="login-btn"><a href="#"><i className="far fa-user" /></a></li>
-                    <li className="d-shop-cart"><a href="#"><i className="fas fa-shopping-cart" /> <span className="cart-count">3</span></a>
-                      <ul className="minicart">
-                        <li>
-                          <div className="cart-img">
-                            <a href="#">
-                              <img src="./assets/pro1.jpg" alt="" />
-                            </a>
-                          </div>
-                          <div className="cart-content">
-                            <h3>
-                              <a href="#">Black &amp; White Shoes</a>
-                            </h3>
-                            <div className="cart-price">
-                              <span className="new">$ 229.9</span>
-                              <span>
-                                <del>$239.9</del>
-                              </span>
-                            </div>
-                          </div>
-                          <div className="del-icon">
-                            <a href="#">
-                              <i className="far fa-trash-alt" />
-                            </a>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="cart-img">
-                            <a href="#">
-                              <img src="./assets/pro2.jpg" alt="" />
-                            </a>
-                          </div>
-                          <div className="cart-content">
-                            <h3>
-                              <a href="#">Black &amp; White Shoes</a>
-                            </h3>
-                            <div className="cart-price">
-                              <span className="new">$ 229.9</span>
-                              <span>
-                                <del>$239.9</del>
-                              </span>
-                            </div>
-                          </div>
-                          <div className="del-icon">
-                            <a href="#">
-                              <i className="far fa-trash-alt" />
-                            </a>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="cart-img">
-                            <a href="#">
-                              <img src="./assets/pro3.jpg" alt="" />
-                            </a>
-                          </div>
-                          <div className="cart-content">
-                            <h3>
-                              <a href="#">Black &amp; White Shoes</a>
-                            </h3>
-                            <div className="cart-price">
-                              <span className="new">$ 229.9</span>
-                              <span>
-                                <del>$239.9</del>
-                              </span>
-                            </div>
-                          </div>
-                          <div className="del-icon">
-                            <a href="#">
-                              <i className="far fa-trash-alt" />
-                            </a>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="total-price">
-                            <span className="f-left">Total:</span>
-                            <span className="f-right">$300.0</span>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="checkout-link">
-                            <a href="#">Shopping Cart</a>
-                            <a className="red-color" href="#">Checkout</a>
-                          </div>
-                        </li>
-                      </ul>
-                    </li>
+                    <Cart data={props.productsInCart} />
                   </ul>
                 </div>
               </div>
@@ -156,6 +73,7 @@ function Layout(props) {
       </header>
     {/* Body */}
     {props.children}
+    
     <footer className="footer-area pl-100 pr-100">
         <div className="footer-area box-90 pt-100 pb-60" data-background="img/bg/footer.jpg" style={{backgroundImage: 'url("img/bg/footer.jpg")'}}>
           <div className="container">
