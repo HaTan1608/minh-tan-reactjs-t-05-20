@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState , useContext } from "react";
 import Layout from "../../components/Layout";
+import { ThemeContext } from "../../"
 
 function Register() {
+  const value = useContext(ThemeContext)
   const [valueRegister, setValueRegister] = useState({
     fullName: "",
     email: "",
@@ -22,7 +24,7 @@ function Register() {
   };
   return (
     <Layout productsInCart={[]}>
-      <main>
+      <main style={{backgroundColor:value}}>
         {/* breadcrumb-area-start */}
         <section
           className="breadcrumb-area"

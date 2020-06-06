@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom"
 function ProductItem(props) {
   const onAddToCart = () => {
     return props.onAddProduct(props);
@@ -16,9 +16,9 @@ function ProductItem(props) {
               <a title="Shoppingb Cart">
                 <i className="fas fa-shopping-cart" onClick={onAddToCart} />
               </a>
-              <a href="#" title="Quick View">
-                <i className="fas fa-search" />
-              </a>
+              <Link to={`/product-detail/${props.id}`} title="Quick View">
+              <i className="fas fa-search" />
+              </Link>
             </div>
           </div>
           <div className="product-content pr-0">

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import Layout from "./components/layout/index";
 
-import SideBar from "./components/Sidebar";
+import SideBar from "./components/SideBar";
 import Content from "./components/content";
 import ProductItem from "./components/ProductItem";
 import data from "./product.json";

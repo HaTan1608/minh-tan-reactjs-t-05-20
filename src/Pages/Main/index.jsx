@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./Main.css";
 import Layout from "../../components/Layout";
-
+import { useContext } from "react"
+import { ThemeContext} from "../.."
 import SideBar from "../../components/SideBar";
 import Content from "../../components/Content";
 import ProductItem from "../../components/ProductItem";
@@ -12,7 +13,7 @@ function App() {
   const [productList, setProductsList] = useState(data.data);
   //add cart
   const [productsInCart, setProductsInCart] = useState([]);
-
+  const value = useContext(ThemeContext)
   const AddProductToCart = (newProduct) => {
     let productCart = {
       id: newProduct.id,
@@ -84,7 +85,7 @@ function App() {
   };
   return (
     <Layout productsInCart={productsInCart} onDelete={onDelete}>
-      <main>
+      <main style={{backgroundColor:value}}>
         <section className="shop-area pt-150 pb-100">
           <div className="container">
             <div className="row">

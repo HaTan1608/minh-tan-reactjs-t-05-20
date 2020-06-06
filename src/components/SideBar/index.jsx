@@ -1,5 +1,4 @@
 import React, { Component, useState } from "react";
-
 function SideBar(props) {
   const [value, setValue] = useState(" ");
   const sortHighLow = () => {
