@@ -1,19 +1,41 @@
 import React, { useState } from "react";
 import Layout from "../../components/Layout";
-
-import { BrowserRouter as Router, Link, Switch } from 'react-router-dom'
+import axios from 'axios';
+import { BrowserRouter as Router, Link, Switch ,useHistory} from 'react-router-dom'
 function Login() {
   const [valueLogin, setValueLogin] = useState({ email: "", password: "" });
-
+  const [error,setError ] = useState("")
+  const history = useHistory()
   const onChangeValue = (e) => {
+    setError('')
     setValueLogin({ ...valueLogin, email: e.target.value });
   };
   const onChangeValuePssWd = (e) => {
+    setError('')
     setValueLogin({ ...valueLogin, password: e.target.value });
   };
+
+  const login = async data => {
+    try {
+      const result = await axios({
+        method: "POST",
+        url: "https://min-shop.herokuapp.com/rest/user/signIn",
+        data
+      });
+      localStorage.setItem("token", result.data.accessToken)
+      if(history.location.state.from.pathname){
+        history.push(history.location.state.from.pathname)
+      }else{
+        history.push('/')
+        }
+    }catch(err) {
+      console.log(err.response.data.message)
+      setError(err.response.data.message);
+    }
+  }
   const onSubmitLogin = (e) => {
     e.preventDefault();
-    console.log(valueLogin);
+    login(valueLogin);
   };
   return (
     <Layout productsInCart={[]}>
@@ -50,6 +72,7 @@ function Login() {
                 <div className="basic-login">
                   <h3 className="text-center mb-60">Login From Here</h3>
                   <form action="#" onSubmit={onSubmitLogin}>
+                    <span>{error}</span>
                     <label htmlFor="name">
                       Email Address <span>**</span>
                     </label>
@@ -77,7 +100,7 @@ function Login() {
                         <a href="#">Lost your password?</a>
                       </span>
                     </div>
-                    <button className="btn theme-btn-2 w-100">Login Now</button>
+                    <button type="submit" className="btn theme-btn-2 w-100">Login Now</button>
                     <div className="or-divide">
                       <span>or</span>
                     </div>

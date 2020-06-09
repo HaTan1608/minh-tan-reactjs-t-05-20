@@ -1,33 +1,51 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Main from './Pages/Main';
-import Register from './Pages/Register'
-import Login from './Pages/Login'
 import * as serviceWorker from './serviceWorker';
-import ProductDetail from './Pages/ProductDetail'
+import store from './store';
+import Loading from './Pages/Loading';
 import { BrowserRouter as Router,Route,Switch } from 'react-router-dom' 
+import ProtectedRoute from './components/ProtectedRoute';
 import productData from './product.json'
 export const ThemeContext = React.createContext('light');
+const Main = React.lazy(() => import('./Pages/Main'))
+const Login = React.lazy(() => import('./Pages/Login')) 
+const ProductDetail = React.lazy(() => import('./Pages/ProductDetail'))
+const Register = React.lazy(() => import('./Pages/Register'))
+const NotFoundPage = React.lazy(() => import('./Pages/NotFoundPage'))
+
+
+store.dispatch({
+  type: "GUI_TIEN",
+  data: 500000
+})
+console.log(store.getState())
+
+store.dispatch({
+  type: "RUT_TIEN",
+  data: 500000
+})
+console.log(store.getState())
+
+store.dispatch({
+  type: "DONG_TAI_KHOAN",
+})
+
+console.log(store.getState())
+
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
     <ThemeContext.Provider value={'gray'}>
+    <React.Suspense fallback={<Loading />}>
       <Switch>
-        <Route exact path="/">
-          <Main/>
-        </Route>
-        <Route exact path="/(login|dang-nhap)">
-          <Login/>
-        </Route>
-        <Route exact path="/register" >
-          <Register/>
-        </Route>
-        <Route exact path="/product-detail/:id">
-          <ProductDetail/>
-        </Route>
-        {/* <Route 
+        <Route exact path="/" component={Main}/>
+        <Route exact path="/(login|dang-nhap)" component={Login}/>
+        <Route exact path="/register" component={Register}/>
+        <ProtectedRoute exact path="/product-detail/:id">
+            <ProductDetail />
+          </ProtectedRoute>{/* <Route 
         exact 
         path="/product-detail/:id"
         render={(props)=> {
@@ -41,11 +59,10 @@ ReactDOM.render(
           }
           }
         /> */}
-        <Route exact path="*">
-          <div>404</div>
-        </Route>
+        <Route exact path="*" component={NotFoundPage}/>
+ 
       </Switch>
-   
+   </React.Suspense>
     </ThemeContext.Provider>
     </Router>
   </React.StrictMode>,

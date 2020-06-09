@@ -1,5 +1,6 @@
 import React, { useState , useContext } from "react";
 import Layout from "../../components/Layout";
+import axios from 'axios';
 import { ThemeContext } from "../../"
 
 function Register() {
@@ -20,8 +21,22 @@ function Register() {
   };
   const onSubmitRegister = (e) => {
     e.preventDefault();
-    console.log(valueRegister);
+    register(valueRegister);
   };
+  const register = async data => {
+    try {
+      const result = await axios({
+        method: "POST",
+        url: "https://min-shop.herokuapp.com/rest/user/signUp",
+        data
+      });
+  
+      console.log(result.data);
+      localStorage.setItem("token", result.data.accessToken)
+    }catch(err) {
+      return err.message
+    }
+  }
   return (
     <Layout productsInCart={[]}>
       <main style={{backgroundColor:value}}>

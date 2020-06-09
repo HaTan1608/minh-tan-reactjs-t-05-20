@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Main.css";
 import Layout from "../../components/Layout";
 import { useContext } from "react"
@@ -7,9 +7,19 @@ import SideBar from "../../components/SideBar";
 import Content from "../../components/Content";
 import ProductItem from "../../components/ProductItem";
 import data from "../../product.json";
-
+import axios from "axios"
 function App() {
   // state products
+  useEffect(() => {
+    async function getProducts() {
+      const result = await axios({
+        method: 'GET',
+        url: 'https://min-shop.herokuapp.com/rest/product'
+      })
+      setProductsList(result.data.data)
+    }
+    getProducts()
+  }, [])
   const [productList, setProductsList] = useState(data.data);
   //add cart
   const [productsInCart, setProductsInCart] = useState([]);
