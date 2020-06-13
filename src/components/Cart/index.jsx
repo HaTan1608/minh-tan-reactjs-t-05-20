@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function Cart(props) {
+function Cart(props) {
+  console.log(props.data);
+
+  const totalPrice = props.data.reduce((prev, cur) => prev +  cur.price, 0)
+  
   return (
     <li className="d-shop-cart">
       <a href="#">
@@ -8,47 +12,41 @@ export default function Cart(props) {
         <span className="cart-count">{props.data.length}</span>
       </a>
       <ul className="minicart">
-        {props.data.map((element) => (
-          <li key={element.id}>
-            <div className="cart-img">
-              <a href="#">
-                <img src={element.imageURL} alt="" />
-              </a>
-            </div>
-            <div className="cart-content">
-              <h3>
-                <a href="#">{element.name}</a>
-              </h3>
-              <div className="cart-price">
-                <span className="new">{element.price}</span>
-                <span>
-                  <del>{element.priceMax}</del>
-                </span>
+        {props.data.map((elm) => {
+          return (
+            <li key={elm.name}>
+              <div className="cart-img">
+                <a href="#">
+                  <img src={elm.imageURL} alt="" />
+                </a>
               </div>
-            </div>
-            <div className="del-icon">
-              <a>
-                <i
-                  className="far fa-trash-alt"
-                  onClick={() => {
-                    props.onDelete(element.id);
-                  }}
-                />
-              </a>
-            </div>
-          </li>
-        ))}
+              <div className="cart-content">
+                <h3>
+                  <a href="#">{elm.name}</a>
+                </h3>
+                <div className="cart-price">
+                  <span className="new">$ {elm.priceMax}</span>
+                  <span>
+                    <del>${elm.price}</del>
+                  </span>
+                </div>
+              </div>
+              <div className="del-icon">
+                <a href="#">
+                  <i className="far fa-trash-alt" />
+                </a>
+              </div>
+            </li>
+          );
+        })}
 
         <li>
           <div className="total-price">
             <span className="f-left">Total:</span>
-            <span className="f-right">
-              {props.data.reduce((totalPrice, product) => {
-                return (totalPrice += product.price * product.quantity);
-              }, 0)}
-            </span>
+            <span className="f-right">{totalPrice}</span>
           </div>
         </li>
+
         <li>
           <div className="checkout-link">
             <a href="#">Shopping Cart</a>
@@ -61,3 +59,5 @@ export default function Cart(props) {
     </li>
   );
 }
+
+export default Cart;
