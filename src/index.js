@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Loading from './components/Loading'
 import ProtectedRoute from './components/ProtectedRoute';
 import store from './store';
+import { Provider } from 'react-redux'
 
 const Main = React.lazy(() => import('./pages/Main'));
 const Register = React.lazy(() => import('./pages/Register'));
@@ -22,53 +23,56 @@ const ProductDetail = React.lazy(() => import('./pages/ProductDetail'));
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <ThemeContextCustom>
-        <React.Suspense fallback={<Loading />}>
-        <Switch>
-          <Route exact path="/">
-            <Main />
-          </Route>
+    <Provider store={store}>
+      <Router>
+        <ThemeContextCustom>
+          <React.Suspense fallback={<Loading />}>
+          <Switch>
+            <Route exact path="/">
+              <Main />
+            </Route>
 
-          <Route exact path="/(login|dang-nhap)">
-            <Login />
-          </Route>
+            <Route exact path="/(login|dang-nhap)">
+              <Login />
+            </Route>
 
-          <Route exact path="/register">
-            <Register />
-          </Route>
+            <Route exact path="/register">
+              <Register />
+            </Route>
 
-          <ProtectedRoute exact path="/product-detail/:id">
-            <ProductDetail />
-          </ProtectedRoute>
+            <ProtectedRoute exact path="/product-detail/:id">
+              <ProductDetail />
+            </ProtectedRoute>
 
-          <ProtectedRoute exact path="/me">
-            <div>My name is Tai</div>
-          </ProtectedRoute>
+            <ProtectedRoute exact path="/me">
+              <div>My name is Tai</div>
+            </ProtectedRoute>
 
-          {/* <Route 
-            exact
-            path="/product-detail/:id"
-            render={(props) => {
-              console.log("props.match", props.match.params.id)
-              const product = productData.data.find(elm => elm.id == props.match.params.id)
-              console.log(product, "product")
-              if(!product) {
-                return <h1>404 ko tim thay san pham</h1>
-              }
-              return <ProductDetail {...product} />
-            }}
-          /> */}
+            {/* <Route 
+              exact
+              path="/product-detail/:id"
+              render={(props) => {
+                console.log("props.match", props.match.params.id)
+                const product = productData.data.find(elm => elm.id == props.match.params.id)
+                console.log(product, "product")
+                if(!product) {
+                  return <h1>404 ko tim thay san pham</h1>
+                }
+                return <ProductDetail {...product} />
+              }}
+            /> */}
 
 
-          <Route path="*">
-            <h1>404</h1>
-          </Route>
+            <Route path="*">
+              <h1>404</h1>
+            </Route>
 
-        </Switch>
-        </React.Suspense>
-      </ThemeContextCustom>
-    </Router>
+          </Switch>
+          </React.Suspense>
+        </ThemeContextCustom>
+      </Router>
+    </Provider>
+    
   </React.StrictMode>,
   document.getElementById('root')
 );
