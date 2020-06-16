@@ -1,54 +1,55 @@
+  
 import React, { useState } from 'react'
 import Layout from '../../components/Layout'
-
+import { connect } from "react-redux";
 import { Link, useHistory } from 'react-router-dom'
-import { registerAccountAction } from './Register.action'
-function Register() {
-  const [userInfo, setUserInfo] = useState({
-    email: "",
+import { registerAccountAction } from "./Register.action";
+function Register(props) {
+  const [err, setErr] = useState("");
+  const [valueRegister, setValueRegister] = useState({
     fullName: "",
-    password: ""
-  })
-
-  const [errorMessage, setErrorMessage] = useState("")
-  const history = useHistory()
-
-  const onSubmitLogin = async (e) => {
-    e.preventDefault();
-    try {
-      await props.registerAccount(valueLogin);
-      if (history.location.state.from.pathname) {
-        history.push(history.location.state.from.pathname);
-      }
-      window.location.reload();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
-    setErrMessage(props.error);
-  }, [props.error]);
+    email: "",
+    password: "",
+  });
+  const history = useHistory();
 
   const onChange = (e) => {
-    setUserInfo({
-      ...userInfo,
-      [e.target.name]: e.target.value
-    })
-  }
+    setValueRegister({
+      ...valueRegister,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const onSubmitRegister = async (e) => {
+    e.preventDefault();
+    try {
+      await props.registerAccount(valueRegister);
+      history.push("/login");
+    } catch (err) {
+      console.log(err);
+      setErr(props.err);
+    }
+  };
 
   return (
     <Layout productsInCart={[]}>
       <main>
         {/* breadcrumb-area-start */}
-        <section className="breadcrumb-area" style={{backgroundImage: 'url("./assets/page-title.png")'}}>
+        <section
+          className="breadcrumb-area"
+          style={{ backgroundImage: 'url("/assets/page-title.png")' }}
+        >
           <div className="container">
             <div className="row">
               <div className="col-xl-12">
                 <div className="breadcrumb-text text-center">
                   <h1>Register</h1>
                   <ul className="breadcrumb-menu">
-                    <li><a href="index.html">home</a></li>
-                    <li><span>Register</span></li>
+                    <li>
+                      <a href="index.html">home</a>
+                    </li>
+                    <li>
+                      <span>Register</span>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -62,19 +63,49 @@ function Register() {
             <div className="row">
               <div className="col-lg-8 offset-lg-2">
                 <div className="basic-login">
-                  <h3 className="text-center mb-60">Signup From Here</h3>
-                  <p className="text-danger">{errorMessage}</p>
-                  <form onSubmit={onSubmit}>
-                    <label htmlFor="name">FullName <span>**</span></label>
-                    <input name="fullName" id="name" type="text" placeholder="Enter your Full Name..." />
-                    <label htmlFor="email-id">Email Address <span>**</span></label>
-                    <input name="email" id="email-id" type="text" placeholder="Enter Email address..." />
-                    <label htmlFor="pass">Password <span>**</span></label>
-                    <input name="password" id="pass" type="password" placeholder="Enter password..." />
+                  <h3 className="text-center mb-60">Sign Up From Here</h3>
+                  <form action="#" onSubmit={onSubmitRegister}>
+                    <span className="text-danger">{err}</span>
+                    <label htmlFor="name">
+                      Full Name <span>**</span>
+                    </label>
+                    <input
+                      name="username"
+                      id="name"
+                      type="text"
+                      placeholder="Enter Username or Email address..."
+                      onChange={onChange}
+                    />
+                    <label htmlFor="email-id">
+                      Email Address <span>**</span>
+                    </label>
+                    <input
+                      name="email"
+                      id="email-id"
+                      type="email"
+                      placeholder="Enter Username or Email address..."
+                      onChange={onChange}
+                    />
+                    <label htmlFor="pass">
+                      Password <span>**</span>
+                    </label>
+                    <input
+                      name="password"
+                      id="pass"
+                      type="password"
+                      placeholder="Enter password..."
+                      onChange={onChange}
+                    />
                     <div className="mt-10" />
-                    <button className="btn theme-btn-2 w-100">Register Now</button>
-                    <div className="or-divide"><span>or</span></div>
-                    <Link to="/login" className="btn theme-btn w-100">login Now</Link>
+                    <button className="btn theme-btn-2 w-100">
+                      Register Now
+                    </button>
+                    <div className="or-divide">
+                      <span>or</span>
+                    </div>
+                    <Link to={`/login`} className="btn theme-btn w-100">
+                      login Now
+                    </Link>
                   </form>
                 </div>
               </div>
@@ -84,14 +115,13 @@ function Register() {
         {/* login Area End*/}
       </main>
     </Layout>
-  )
+  );
 }
 const mapStateToProps = (state) => {
   return {
-    error: state.registerReducer.error,
+    err: state.registerReducer.error,
   };
 };
-
 const mapDispatchToProps = {
   registerAccount: registerAccountAction,
 };
