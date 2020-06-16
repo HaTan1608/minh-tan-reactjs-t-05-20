@@ -26,25 +26,7 @@ export function productListFailureAction(error) {
 
 
 export async function getProductsAction() {
-  // return async (dispatch) => {
-  //   dispatch(productListRequestAction())
 
-  //   try {
-  //     const result = await axios({
-  //       method: 'GET',
-  //       url: 'https://min-shop.herokuapp.com/rest/product'
-  //     })
-    
-  //     dispatch(productListSuccessAction(result.data.data))
-
-  //   } catch(error) {
-  //     dispatch({
-  //       type: PRODUCT_LIST_FAILURE,
-  //       error: error
-  //     })
-  //   }
-  // }
-  
   store.dispatch(productListRequestAction())
 
     try {

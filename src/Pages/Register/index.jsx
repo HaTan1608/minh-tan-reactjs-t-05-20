@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import Layout from '../../components/Layout'
-import axios from 'axios'
-import { Link, useHistory } from 'react-router-dom'
 
+import { Link, useHistory } from 'react-router-dom'
+import { registerAccountAction } from './Register.action'
 function Register() {
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -13,11 +13,21 @@ function Register() {
   const [errorMessage, setErrorMessage] = useState("")
   const history = useHistory()
 
-  const onSubmit = (e) => {
-    e.preventDefault()
-    console.log(userInfo, "userInfo")
-    register(userInfo)
-  }
+  const onSubmitLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await props.registerAccount(valueLogin);
+      if (history.location.state.from.pathname) {
+        history.push(history.location.state.from.pathname);
+      }
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    setErrMessage(props.error);
+  }, [props.error]);
 
   const onChange = (e) => {
     setUserInfo({
@@ -26,22 +36,6 @@ function Register() {
     })
   }
 
-  const register = async (data) => {
-    setErrorMessage('')
-    try {
-      const result = await axios({
-        method: "POST",
-        url: "https://min-shop.herokuapp.com/rest/user/signUp",
-        data
-      });
-  
-      console.log(result.data);
-      localStorage.setItem("token", result.data.accessToken)
-      history.push('/')
-    } catch (error) {
-      setErrorMessage(error.response.data.message)
-    }
-  }
   return (
     <Layout productsInCart={[]}>
       <main>
@@ -92,5 +86,13 @@ function Register() {
     </Layout>
   )
 }
+const mapStateToProps = (state) => {
+  return {
+    error: state.registerReducer.error,
+  };
+};
 
-export default Register
+const mapDispatchToProps = {
+  registerAccount: registerAccountAction,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
