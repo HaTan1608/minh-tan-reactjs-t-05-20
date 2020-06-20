@@ -9,7 +9,7 @@ function Login(props) {
   const [valueLogin, setValueLogin] = useState({ email: "", password: "" });
   const [errMessage, setErrMessage] = useState("");
   const history = useHistory();
-
+  console.log(history)
   const onChangeValue = (e) => {
     setValueLogin({
       ...valueLogin,
@@ -21,7 +21,12 @@ function Login(props) {
     try {
       await props.loginAccount(valueLogin);
       if (history.location.state.from.pathname) {
+        if(history.location.state.from.pathname==='/login'){
+          history.push('/')
+        }
+        else{
         history.push(history.location.state.from.pathname);
+        }
       }
       window.location.reload();
     } catch (err) {

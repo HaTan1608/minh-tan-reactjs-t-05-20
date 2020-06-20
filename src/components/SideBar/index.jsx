@@ -38,19 +38,19 @@ function SideBar(props) {
             <h3 className="shop-title">SHOP BY</h3>
             <ul className="shop-link">
               <li>
-                <a onClick={props.sortNameAZ}>Name: A-Z</a>
+                <a onClick={props.onSortAtoZ}>Name: A-Z</a>
               </li>
               <li>
-                <a onClick={props.sortNameZA}>Name: Z-A</a>
+                <a onClick={props.onSortZtoA}>Name: Z-A</a>
               </li>
               <li>
-                <a href="#">Price: High to Low</a>
+                <a onClick={props.onSort}>Price: High to Low</a>
               </li>
               <li>
-                <a href="#">Price: Low to High</a>
+                <a onClick={props.onSortLow}>Price: Low to High</a>
               </li>
               <li>
-                <a href="#">Product: Top Sales</a>
+                <a onClick={props.onSortLow}>Product: Top Sales</a>
               </li>
             </ul>
           </div>

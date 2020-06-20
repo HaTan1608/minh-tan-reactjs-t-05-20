@@ -1,122 +1,123 @@
-import React, { useState, useContext, useEffect } from "react";
-import "./Main.css";
-import Layout from "../../components/Layout";
+import React, { useContext, useEffect, useState } from "react";
+import { connect } from "react-redux";
 import Content from "../../components/Content";
+import Layout from "../../components/Layout";
 import ProductItem from "../../components/ProductItem";
 import SideBar from "../../components/SideBar";
-import dataProduct from '../../product.json'
-import { useBgMode } from "../../hooks/useBgMode";
-import axios from 'axios'
-import store from "../../store";
-import { connect } from 'react-redux'
-import { getProductsAction } from './Main.action'
+import { ThemeContext } from "../../index";
+import data from "../../product.json";
+import Loading from "../Loading";
+import { getProductList,sortProductsIncrease,sortProductsDecrease,sortProductsAtoZ,sortProductsZtoA } from "./Main.action";
+import "./Main.css";
 
-function Main(props) {
-  const [products, setProducts] = useState([])
-  const [productsInCart, setProductsInCart] = useState([])
-  const [value, setValue] = useBgMode()
-  const { getProducts } = props;
+function App(props) {
+  const value = useContext(ThemeContext);
 
-
-  // store.subscribe(() => {
-  //   const stateFromStore = store.getState()
-  //   if(stateFromStore.productsReducer.products) {
-  //     setProducts(stateFromStore.productsReducer.products)
-  //   }
-  // })
+  // state products
+  const [productList, setProductsList] = useState([]);
+  //add cart
+  const [productsInCart, setProductsInCart] = useState([]);
 
   useEffect(() => {
-    if(props.productsListA) {
-      setProducts(props.productsListA)
+    if (props.productsList) {
+      setProductsList(props.productsList);
     }
-  }, [props.productsListA])
+  }, [props.productsList]);
 
   useEffect(() => {
-    getProductsAction()
-  }, [])
-  
-  const onSelectProduct = (propsOfProductItem) => {
-    console.log(propsOfProductItem)
-    setProductsInCart([...productsInCart, propsOfProductItem])
+    props.getProductList();
+  }, []);
 
-    /* 
-      productsInCart = []
-      productsInCart.push(propsOfProductItem)
-    */
-  }
-  const sortNameAZ =() => {
-    console.log("sortAZ")
-    const newProductSort = [...products].sort((a,b) => a.name.localeCompare(b.name))
-    setProducts(newProductSort)
-  }
-
-  const sortNameZA =() => {
-    console.log("sortAZ")
-    const newProductSort = [...products].sort((a,b) => b.name.localeCompare(a.name))
-    setProducts(newProductSort)
-  }
-
-  const onSearch = (value) => {
-    const newProductSearch = [...dataProduct.data].filter(item => {
-      return item.name.includes(value)
-    })
-
-
-
-    console.log(newProductSearch)
-    setProducts(newProductSearch)
-
-    if(newProductSearch.length > 0) {
-      setValue('blue')
+  const AddProductToCart = (newProduct) => {
+    let productCart = {
+      id: newProduct.id,
+      name: newProduct.name,
+      type: newProduct.type,
+      price: newProduct.price,
+      imageURL: newProduct.imageURL,
+      quantity: 1,
+    };
+    let productUpdate = [...productsInCart];
+    let index = productUpdate.findIndex((pd) => pd.id === productCart.id);
+    if (index !== -1) {
+      productUpdate[index].quantity += 1;
     } else {
-      setValue('red')
+      productUpdate.push(productCart);
     }
+    setProductsInCart(productUpdate);
+  };
+  const onHightToLow = () => {
+    let newProducts = [...productList];
+    props.sortProductsDecrease(newProducts)
+  };
+  const onLowToHigh = () => {
+    let newProducts = [...productList];
+    props.sortProductsIncrease(newProducts)
+  };
+  const onSortAZ = () => {
+    let newProducts = [...productList];
+    props.sortProductsAtoZ(newProducts)
+  };
+  const onSortZA = () => {
+    let newProducts = [...productList];
+    props.sortProductsZtoA(newProducts)
+  };
+  const onDelete = (productId) => {
+    const deleteProduct = [...productsInCart].filter(
+      (product) => product.id !== productId
+    );
+    setProductsInCart(deleteProduct);
+  };
+  const onSearch = (value) => {
+    console.log(value);
 
-  }
-
-  console.log("products", products)
-
-  if(props.loading) {
-    return 'loading...'
-  }
-
+    const newProducts = [...data.data].filter((product) => {
+      return product.name.includes(value);
+    });
+    setProductsList(newProducts);
+  };
   return (
-    <Layout productsInCart={productsInCart}>
-      <main style={{ backgroundColor: value }}>
-      <section className="shop-area pt-150 pb-100">
+    <Layout productsInCart={productsInCart} onDelete={onDelete}>
+      <main>
+        <section className="shop-area pt-150 pb-100">
           <div className="container">
             <div className="row">
-            <Content>
-              {
-                products.map(elm => {
+              <Content count={productList.length}>
+                {productList.map((elm) => {
                   return (
-                    <ProductItem 
-                    {...elm} imageURL={elm.image} 
-                    onSelectProduct={onSelectProduct}
+                    <ProductItem
+                      {...elm}
+                      imageURL={elm.image}
+                      onAddProduct={AddProductToCart}
                     />
-                  )
-                })
-              }
-            </Content>
-            <SideBar sortNameZA={sortNameZA} sortNameAZ={sortNameAZ} onSearch={onSearch}/>
+                  );
+                })}
+                <Loading />
+              </Content>
+              <SideBar
+                onSort={onHightToLow}
+                onSortLow={onLowToHigh}
+                onSortAtoZ={onSortAZ}
+                onSortZtoA={onSortZA}
+                onSearch={onSearch}
+              />
             </div>
           </div>
         </section>
-    </main>
-      
+      </main>
     </Layout>
   );
 }
-
 const mapStateToProps = (state) => {
   return {
-    productsListA: state.productsReducer.products,
-    loading: state.productsReducer.loading
-  }
-}
-
-// const mapDispatchToProps = {
-//   getProducts: getProductsAction
-// }
-
-export default connect(mapStateToProps)(Main)
+    productsList: state.productsReducer.products,
+  };
+};
+const mapDispatchToProps = state => ({
+  getProductList,
+  sortProductsDecrease,
+  sortProductsIncrease,
+  sortProductsZtoA,
+  sortProductsAtoZ
+});
+export default connect(mapStateToProps, {sortProductsIncrease,sortProductsDecrease,sortProductsAtoZ,sortProductsZtoA,getProductList})(App);

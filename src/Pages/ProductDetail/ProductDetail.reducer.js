@@ -1,35 +1,32 @@
-import * as actionTypes from './ProductDetail.action.js'
-
-const initState = {
-  data: [],
+import * as actionTypes from "./ProductDetail.action";
+const initiState = {
+  data: null,
   loading: false,
-  error: null
-}
+  error: null,
+};
 
-function ProductDetailReducer(state = initState, action) {
-  switch(action.type) {
-    case actionTypes.PRODUCT_DETAIL_REQUEST:
+function ProductDetailReducer(state = initiState, action) {
+  switch (action.type) {
+    case actionTypes.PRODUCTDETAIL_REQUEST:
       return {
         ...state,
-        loading: true
-      }
+        loading: true,
+      };
 
-    case actionTypes.PRODUCT_DETAIL_SUCCESS:
+    case actionTypes.PRODUCTDETAILT_SUCCESS:
       return {
         ...state,
         loading: false,
-        products: action.data
-      }
-    
-    case actionTypes.PRODUCT_DETAIL_FAILURE:
+        data: action.data,
+      };
+    case actionTypes.PRODUCTDETAIL_FAIL:
       return {
         ...state,
         loading: false,
-        error: action.error
-      }
+        error: action.error,
+      };
     default:
-      return state
+      return { ...state };
   }
 }
-
-export default ProductDetailReducer
+export default ProductDetailReducer;
